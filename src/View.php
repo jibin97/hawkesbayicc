@@ -28,6 +28,26 @@ final class View
         return self::capture($layout, ['content' => $html] + $vars);
     }
 
+    /**
+     * Render a public page (views/public/pages/{page}.php) inside the public layout.
+     * Every page receives $site (content/site.php) and $path (for active-nav state).
+     *
+     * @param array<string, mixed> $vars expects 'title' (?string), 'description', 'path'
+     */
+    public static function page(string $page, array $vars = []): string
+    {
+        $vars += ['title' => null, 'description' => '', 'path' => ''];
+        $vars['site'] = Content::get('site');
+
+        return self::render('public/pages/' . $page, $vars, 'public/layout');
+    }
+
+    /** Render a partial from views/ (no layout), e.g. View::partial('public/partials/card', [...]). */
+    public static function partial(string $template, array $vars = []): string
+    {
+        return self::capture($template, $vars);
+    }
+
     /** @param array<string, mixed> $vars */
     private static function capture(string $template, array $vars): string
     {

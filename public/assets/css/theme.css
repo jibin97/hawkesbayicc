@@ -1,109 +1,160 @@
 /*
- * Theme configuration — every look-and-feel decision lives here as a CSS custom property.
+ * Theme configuration: every look-and-feel decision lives here as a CSS custom property.
  * site.css uses only these variables; to re-theme the site, edit this file only.
  *
- * Contrast notes (WCAG AA needs 4.5:1 for normal text, 3:1 for large text and UI borders):
- *   text on bg 18.6 · text on surface 17.4 · muted on surface 6.0 · brass on surface 10.1
- *   on-primary on primary-fill 5.1 · input border on surface 3.7
- *   Brand vermilion #E03C31 is 4.0 with white text and 4.3 as text on surface — below AA for
- *   normal text — so buttons use a slightly deeper fill and vermilion text uses a lighter tint.
+ * Palette: "Editorial Stage & Cultural Heritage" (HBICC revamp spec).
+ * Contrast (WCAG AA: 4.5:1 text, 3:1 UI borders), dark sections:
+ *   ivory text on bg 16.9 · stone muted on card 6.9 · gold on card 7.6 · vermilion-tint text on card 6.6
+ *   white on vermilion button 5.0 (ivory would be 4.49, just under AA) · input border on card 3.2
+ * Light sections (.section--light):
+ *   ink on alabaster 16.6 · muted 6.8 · link 5.9 · vermilion on white 5.0 · input border 3.6
+ *   Temple gold is 2.1:1 on alabaster: decoration/borders only there, never text.
  */
+
+/* ---------- Fonts (self-hosted, SIL OFL: see /assets/fonts/*-OFL.txt) ---------- */
+@font-face {
+    font-family: "Cormorant Garamond";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 300 700;
+    src: url("../fonts/cormorant-garamond-latin-wght-normal.woff2") format("woff2-variations"),
+         url("../fonts/cormorant-garamond-latin-wght-normal.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+    font-family: "Cormorant Garamond";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 300 700;
+    src: url("../fonts/cormorant-garamond-latin-ext-wght-normal.woff2") format("woff2-variations"),
+         url("../fonts/cormorant-garamond-latin-ext-wght-normal.woff2") format("woff2");
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+    font-family: "Plus Jakarta Sans";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 200 800;
+    src: url("../fonts/plus-jakarta-sans-latin-wght-normal.woff2") format("woff2-variations"),
+         url("../fonts/plus-jakarta-sans-latin-wght-normal.woff2") format("woff2");
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+    font-family: "Plus Jakarta Sans";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 200 800;
+    src: url("../fonts/plus-jakarta-sans-latin-ext-wght-normal.woff2") format("woff2-variations"),
+         url("../fonts/plus-jakarta-sans-latin-ext-wght-normal.woff2") format("woff2");
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
 
 :root {
     color-scheme: dark;
 
-    /* ---------- Brand palette (raw values; prefer the semantic tokens below) ---------- */
-    --palette-stage-black:   #0A0809;
-    --palette-dark-velvet:   #161113;
-    --palette-velvet-raised: #221A1D;
-    --palette-vermilion:     #E03C31;   /* Sindoor Vermilion */
-    --palette-brass:         #E5B869;   /* Brass / Zari Thread */
-    --palette-silk-white:    #FAF6F5;
-    --palette-mauve-grey:    #9C8E91;
+    /* ---------- Brand palette (raw values; components use the semantic tokens below) ---------- */
+    --palette-obsidian:   #111114;   /* Deep Obsidian: primary dark stage surface */
+    --palette-card:       #1A1A20;   /* Elevated card surface */
+    --palette-card-raised:#24242C;
+    --palette-alabaster:  #FAF7F2;   /* Warm Alabaster: light editorial sections */
+    --palette-ink:        #18181B;   /* Deep Charcoal ink */
+    --palette-vermilion:  #C83E2B;   /* Kumkum Vermilion: primary CTAs */
+    --palette-gold:       #D4A359;   /* Temple Gold: borders, badges, dividers */
+    --palette-ivory:      #F5F2EB;   /* Warm Ivory: text on dark */
+    --palette-stone:      #A8A29E;   /* Muted Stone: metadata on dark */
 
     /* ---------- Colours: surfaces ---------- */
-    --color-bg:           var(--palette-stage-black);
-    --color-surface:      var(--palette-dark-velvet);
-    --color-surface-alt:  var(--palette-velvet-raised);
-    --color-border:       #3A2F33;   /* decorative dividers */
-    --color-border-strong:#7A6A6F;   /* form field outlines (≥3:1) */
+    --color-bg:            var(--palette-obsidian);
+    --color-surface:       var(--palette-card);
+    --color-surface-alt:   var(--palette-card-raised);
+    --color-border:        #2E2E36;   /* decorative dividers */
+    --color-border-strong: #6E6870;   /* form field outlines (≥3:1) */
+    --color-overlay:       rgb(17 17 20 / 0.72);   /* image scrims, modal backdrop */
 
     /* ---------- Colours: text ---------- */
-    --color-text:         var(--palette-silk-white);
-    --color-text-muted:   var(--palette-mauve-grey);
-    --color-heading:      var(--palette-silk-white);
+    --color-text:          var(--palette-ivory);
+    --color-text-muted:    var(--palette-stone);
+    --color-heading:       var(--palette-ivory);
 
     /* ---------- Colours: brand accents ---------- */
     --color-primary:            var(--palette-vermilion);  /* accents, rules, highlights */
-    --color-primary-fill:       #C4302A;                   /* button backgrounds */
-    --color-primary-fill-hover: #A9281F;
-    --color-primary-text:       #F07A70;                   /* vermilion as readable text */
-    --color-on-primary:         var(--palette-silk-white);
+    --color-primary-fill:       var(--palette-vermilion);  /* button backgrounds */
+    --color-primary-fill-hover: #A8331F;
+    --color-primary-text:       #F0806F;                   /* vermilion as readable text on dark */
+    --color-on-primary:         #FFFFFF;
 
-    --color-secondary:          var(--palette-brass);
-    --color-secondary-hover:    #F0CB8A;
-    --color-on-secondary:       var(--palette-stage-black);
+    --color-secondary:          var(--palette-gold);       /* gold as text/border on dark */
+    --color-secondary-hover:    #E2BB7D;
+    --color-on-secondary:       var(--palette-obsidian);
+    --color-ornament:           var(--palette-gold);       /* dividers, badges: decorative everywhere */
 
     /* ---------- Colours: interaction ---------- */
-    --color-link:         var(--palette-brass);
-    --color-link-hover:   #F0CB8A;
-    --color-focus:        var(--palette-brass);
-    --color-selection-bg: var(--palette-vermilion);
-    --color-selection-text: var(--palette-silk-white);
+    --color-link:           var(--palette-gold);
+    --color-link-hover:     #E2BB7D;
+    --color-focus:          var(--palette-gold);
+    --color-selection-bg:   var(--palette-vermilion);
+    --color-selection-text: #FFFFFF;
 
     /* ---------- Colours: status (text / background pairs) ---------- */
-    --color-danger:       #FF9A90;  --color-danger-bg:  #2A1412;
-    --color-success:      #8FD9A0;  --color-success-bg: #10241A;
-    --color-warning:      #F2C879;  --color-warning-bg: #2A2110;
-    --color-info:         #9CC3F5;  --color-info-bg:    #0F1B2C;
+    --color-danger:  #FF9A90;  --color-danger-bg:  #2A1614;
+    --color-success: #8FD9A0;  --color-success-bg: #10241A;
+    --color-warning: #F2C879;  --color-warning-bg: #2A2110;
+    --color-info:    #9CC3F5;  --color-info-bg:    #0F1B2C;
 
     /* ---------- Fonts ---------- */
-    --font-body:    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --font-heading: var(--font-body);
-    --font-mono:    ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --font-body:    "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-heading: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --font-mono:    ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
     /* ---------- Type scale (rem; larger sizes shrink on small screens) ---------- */
-    --text-xs:   0.75rem;                                  /* 12px */
-    --text-sm:   0.875rem;                                 /* 14px */
-    --text-base: 1rem;                                     /* 16px */
-    --text-lg:   1.125rem;                                 /* 18px */
-    --text-xl:   1.25rem;                                  /* 20px */
-    --text-2xl:  clamp(1.375rem, 1.2rem + 0.8vw, 1.5rem);  /* 22–24px */
-    --text-3xl:  clamp(1.625rem, 1.35rem + 1.2vw, 1.875rem); /* 26–30px */
-    --text-4xl:  clamp(2rem, 1.5rem + 2.2vw, 2.75rem);     /* 32–44px */
+    --text-xs:   0.75rem;                                      /* 12px */
+    --text-sm:   0.875rem;                                     /* 14px */
+    --text-base: 1rem;                                         /* 16px */
+    --text-lg:   1.125rem;                                     /* 18px */
+    --text-xl:   1.25rem;                                      /* 20px */
+    --text-2xl:  clamp(1.5rem, 1.3rem + 0.9vw, 1.75rem);       /* 24–28px */
+    --text-3xl:  clamp(1.875rem, 1.5rem + 1.6vw, 2.5rem);      /* 30–40px */
+    --text-4xl:  clamp(2.25rem, 1.6rem + 2.8vw, 3.5rem);       /* 36–56px */
+    --text-5xl:  clamp(2.625rem, 1.7rem + 4.2vw, 4.75rem);     /* 42–76px: hero */
 
     /* ---------- Font weights ---------- */
+    --weight-light:    300;
     --weight-regular:  400;
     --weight-medium:   500;
     --weight-semibold: 600;
     --weight-bold:     700;
 
     /* ---------- Line height & letter spacing ---------- */
-    --leading-tight:   1.2;
+    --leading-none:    1.05;
+    --leading-tight:   1.15;
     --leading-snug:    1.35;
-    --leading-normal:  1.6;
-    --tracking-tight:  -0.015em;
+    --leading-normal:  1.65;
+    --tracking-tight:  -0.01em;
     --tracking-normal: 0;
-    --tracking-wide:   0.06em;
+    --tracking-wide:   0.14em;   /* eyebrows, badges (uppercase) */
 
     /* ---------- Text styles (size / weight / line-height per role) ---------- */
-    --h1-size: var(--text-4xl);  --h1-weight: var(--weight-bold);     --h1-leading: var(--leading-tight);
-    --h2-size: var(--text-3xl);  --h2-weight: var(--weight-bold);     --h2-leading: var(--leading-tight);
+    /* Headings use the serif; Cormorant reads small, so it is set a step larger than a sans would be. */
+    --display-size: var(--text-5xl); --display-weight: var(--weight-semibold); --display-leading: var(--leading-none);
+    --h1-size: var(--text-4xl);  --h1-weight: var(--weight-semibold); --h1-leading: var(--leading-tight);
+    --h2-size: var(--text-3xl);  --h2-weight: var(--weight-semibold); --h2-leading: var(--leading-tight);
     --h3-size: var(--text-2xl);  --h3-weight: var(--weight-semibold); --h3-leading: var(--leading-snug);
-    --h4-size: var(--text-xl);   --h4-weight: var(--weight-semibold); --h4-leading: var(--leading-snug);
-    --h5-size: var(--text-lg);   --h5-weight: var(--weight-semibold); --h5-leading: var(--leading-snug);
-    --h6-size: var(--text-base); --h6-weight: var(--weight-semibold); --h6-leading: var(--leading-snug);
-    --body-size:    var(--text-base); --body-weight:    var(--weight-regular);  --body-leading: var(--leading-normal);
+    --h4-size: var(--text-xl);   --h4-weight: var(--weight-bold);     --h4-leading: var(--leading-snug);
+    --h5-size: var(--text-lg);   --h5-weight: var(--weight-bold);     --h5-leading: var(--leading-snug);
+    --h6-size: var(--text-base); --h6-weight: var(--weight-bold);     --h6-leading: var(--leading-snug);
+    --body-size:    var(--text-base); --body-weight:    var(--weight-regular); --body-leading: var(--leading-normal);
     --lead-size:    var(--text-lg);   --lead-weight:    var(--weight-regular);
     --small-size:   var(--text-sm);
     --label-size:   var(--text-sm);   --label-weight:   var(--weight-semibold);
     --button-size:  var(--text-base); --button-weight:  var(--weight-semibold);
-    --eyebrow-size: var(--text-xs);   --eyebrow-weight: var(--weight-semibold);
+    --eyebrow-size: var(--text-xs);   --eyebrow-weight: var(--weight-bold);
+    --nav-size:     var(--text-sm);   --nav-weight:     var(--weight-medium);
 
     /* ---------- Spacing (4px base) ---------- */
     --space-1: 0.25rem;  --space-2: 0.5rem;   --space-3: 0.75rem;  --space-4: 1rem;
     --space-5: 1.25rem;  --space-6: 1.5rem;   --space-8: 2rem;     --space-10: 2.5rem;
-    --space-12: 3rem;    --space-16: 4rem;
+    --space-12: 3rem;    --space-16: 4rem;    --space-20: 5rem;    --space-24: 6rem;
+    --section-space: clamp(var(--space-12), 6vw + 1rem, var(--space-24));
 
     /* ---------- Shape & depth ---------- */
     --radius-sm:   4px;
@@ -111,20 +162,52 @@
     --radius-lg:   14px;
     --radius-full: 999px;
     --border-width: 1px;
-    --focus-ring:  3px solid var(--color-focus);
+    --focus-ring:   3px solid var(--color-focus);
     --touch-target: 44px;   /* minimum height/width for tappable controls */
-    --shadow-sm:   0 1px 2px rgb(0 0 0 / 0.5);
-    --shadow-md:   0 8px 24px rgb(0 0 0 / 0.55);
+    --shadow-sm:    0 1px 2px rgb(0 0 0 / 0.45);
+    --shadow-md:    0 10px 30px rgb(0 0 0 / 0.5);
 
     /* ---------- Layout ---------- */
-    --container-max: 1080px;
-    --container-narrow: 420px;
-    --gutter: var(--space-4);
+    --container-max:    1200px;
+    --container-text:   68ch;
+    --container-narrow: 440px;
+    --gutter:           var(--space-4);
+    --header-height:    64px;
+    --mobile-bar-height: 64px;
 
     /* ---------- Motion ---------- */
-    --transition: 150ms ease;
+    --transition: 180ms ease;
+    --reveal-duration: 600ms;
+}
+
+@media (min-width: 48em) {
+    :root { --gutter: var(--space-6); --header-height: 76px; }
+}
+
+/* Light editorial sections (Academy, forms, long reading): remap the semantic tokens locally. */
+.section--light {
+    color-scheme: light;
+    --color-bg:            var(--palette-alabaster);
+    --color-surface:       #FFFFFF;
+    --color-surface-alt:   #F2EDE4;
+    --color-border:        #E4DCCF;
+    --color-border-strong: #8A8178;
+    --color-text:          var(--palette-ink);
+    --color-text-muted:    #5C564F;
+    --color-heading:       var(--palette-ink);
+    --color-primary-text:  var(--palette-vermilion);
+    --color-secondary:     #8A6420;   /* gold darkened for text use on light (5.0:1) */
+    --color-secondary-hover: #6E4F18;
+    --color-link:          #B0341F;
+    --color-link-hover:    #8C2918;
+    --color-focus:         var(--palette-vermilion);
+    --color-danger:  #9E2A1C;  --color-danger-bg:  #FCEBE8;
+    --color-success: #1F6B3A;  --color-success-bg: #E8F4EC;
+    --color-warning: #7A5410;  --color-warning-bg: #FBF1DC;
+    --color-info:    #1F4F8A;  --color-info-bg:    #E8F0FA;
+    --shadow-md:     0 10px 30px rgb(24 24 27 / 0.08);
 }
 
 @media (prefers-reduced-motion: reduce) {
-    :root { --transition: 0ms; }
+    :root { --transition: 0ms; --reveal-duration: 0ms; }
 }

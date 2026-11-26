@@ -34,7 +34,12 @@ foreach ($site['social'] as $s) {
     <article class="section production <?= $i % 2 === 1 ? 'section--surface production--flip' : '' ?>" id="<?= e($p['slug']) ?>" aria-labelledby="<?= e($p['slug']) ?>-title">
         <div class="wrap production__grid">
             <div class="production__media reveal">
-                <?= View::partial('public/partials/media', ['ratio' => '4x5', 'label' => $p['title'] . ' poster']) ?>
+                <?= View::partial('public/partials/media', [
+                    'image' => image($p['slug'], $p['cover']),
+                    'alt'   => $p['cover_fit'] === 'contain' ? $p['title'] . ' poster' : 'Scene from ' . $p['title'],
+                    'ratio' => '4x5', 'fit' => $p['cover_fit'], 'sizes' => '(min-width: 48em) 420px, 100vw',
+                    'label' => $p['title'] . ' poster', 'eager' => $i === 0,
+                ]) ?>
             </div>
             <div class="production__body">
                 <p class="eyebrow"><?= $p['year'] ? e($p['year']) . ' · ' : '' ?><?= e($p['kicker']) ?></p>
@@ -70,13 +75,15 @@ foreach ($site['social'] as $s) {
                             <p class="text-muted text-small">Trailer coming soon.<?php if ($youtube): ?> Meanwhile, <a href="<?= e($youtube) ?>" rel="noopener" target="_blank">watch on our YouTube channel<span class="visually-hidden"> (opens in a new tab)</span></a>.<?php endif; ?></p>
                         <?php endif; ?>
                     </div>
-                    <div class="gallery-slot">
-                        <h3 class="label-heading">Gallery</h3>
-                        <p class="text-muted text-small">Production photo gallery coming soon.</p>
-                    </div>
                 </div>
             </div>
         </div>
+        <?php $photos = images($p['slug'], [$p['cover']]); if ($photos !== []): ?>
+            <div class="wrap production__gallery">
+                <h3 class="label-heading">Gallery · <?= count($photos) ?> photos</h3>
+                <?= View::partial('public/partials/gallery', ['images' => $photos, 'title' => $p['title'], 'id' => 'gallery-' . $p['slug'], 'visible' => 8]) ?>
+            </div>
+        <?php endif; ?>
     </article>
 <?php endforeach; ?>
 

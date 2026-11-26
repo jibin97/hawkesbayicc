@@ -19,5 +19,4 @@ return [
     'lineup'     => [],   // CONFIRM: [['name' => '', 'instrument' => ''], …]
     'repertoire' => [],   // CONFIRM: e.g. ['Classic Bollywood hits', …]
     'videos'     => [],   // CONFIRM: [['title' => '', 'youtube_id' => ''], …]
-    'gallery_count' => 4,
 ];

@@ -117,3 +117,32 @@ function admin_headers(): void
     header('Referrer-Policy: same-origin');
     header("Content-Security-Policy: default-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'none'");
 }
+
+/**
+ * A photo from content/images.php: ['w', 'h', 'sm' (640px wide), 'lg' (up to 1600px)], or null if absent.
+ *
+ * @return array{w:int,h:int,sm:string,lg:string}|null
+ */
+function image(string $group, string $key): ?array
+{
+    return \App\Content::get('images')[$group][$key] ?? null;
+}
+
+/**
+ * Every photo in a group, in file order, minus any keys in $except.
+ *
+ * @param list<string> $except
+ * @return array<string, array{w:int,h:int,sm:string,lg:string}>
+ */
+function images(string $group, array $except = []): array
+{
+    $all = \App\Content::get('images')[$group] ?? [];
+
+    return array_diff_key($all, array_flip($except));
+}
+
+/** Absolute URL on the canonical site, e.g. abs_url('/academy'). */
+function abs_url(string $path): string
+{
+    return rtrim((string) \App\Content::get('site')['url'], '/') . $path;
+}

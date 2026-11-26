@@ -5,6 +5,7 @@
  * @var array $site
  */
 use App\Content;
+use App\View;
 
 $team = Content::get('team');
 
@@ -12,8 +13,8 @@ $timeline = [
     ['year' => '2015', 'text' => "Deepthi Krishna and Sreejith Nair found the Hawke's Bay Indian Cultural Centre."],
     ['year' => '2017', 'text' => 'The first annual Music and Dance Event (M.A.D.E) for a Cause.'],
     ['year' => '2019', 'text' => 'Krishni Productions launches with Shakuntala, our first Indian epic dance drama.'],
-    ['year' => 'Then', 'text' => "Sita Unsung, and Takshaka – King of the Snakes with Hawke's Bay Flying Trapeze."],
-    ['year' => '2023', 'text' => 'Anton Wuts founds Dr. Wuts & The Bindaas Bollywood Band.'],
+    ['year' => '2021', 'text' => "Sita Unsung, with Hawke's Bay Flying Trapeze, premieres at M.A.D.E for a Cause."],
+    ['year' => '2023', 'text' => 'Takshaka – King of the Snakes, and Anton Wuts founds Dr. Wuts & The Bindaas Bollywood Band.'],
     ['year' => '2025', 'text' => 'Wairua Paani is the featured production at M.A.D.E for a Cause 2025.'],
 ];
 ?>
@@ -50,12 +51,14 @@ $timeline = [
             <p class="eyebrow">Leadership &amp; creative team</p>
             <h2 id="team-title">The people behind HBICC</h2>
         </header>
+        <div class="team-photo reveal"><?= View::partial('public/partials/media', ['image' => image('site', 'team-group'), 'alt' => "The HBICC team standing together under the centre's name in English and te reo Māori", 'ratio' => '3x2', 'fit' => 'contain', 'sizes' => '(min-width: 56em) 860px, 100vw']) ?></div>
+
         <ul class="team-grid">
             <?php foreach ($team as $person): ?>
                 <li class="card team-card reveal" id="<?= e($person['slug']) ?>">
                     <div class="team-card__head">
-                        <?php if ($person['photo'] !== null): ?>
-                            <img class="avatar" src="<?= e($person['photo']) ?>" alt="" width="96" height="96" loading="lazy" decoding="async">
+                        <?php if ($photo = image('team', $person['slug'])): ?>
+                            <?= View::partial('public/partials/img', ['image' => $photo, 'alt' => '', 'sizes' => '72px', 'class' => 'avatar']) ?>
                         <?php else: ?>
                             <span class="avatar avatar--initials" aria-hidden="true"><?= e(initials($person['name'])) ?></span>
                         <?php endif; ?>

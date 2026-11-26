@@ -36,7 +36,9 @@ $pillars = [
 ];
 ?>
 <section class="hero" aria-labelledby="hero-title">
-    <?php /* Phase 4: full-bleed stage photo goes here as <div class="hero__media"><img …></div> */ ?>
+    <?php if ($hero = image('site', 'dance')): ?>
+        <div class="hero__media"><?= View::partial('public/partials/img', ['image' => $hero, 'alt' => '', 'sizes' => '100vw', 'eager' => true]) ?></div>
+    <?php endif; ?>
     <div class="wrap hero__inner">
         <p class="eyebrow">Napier · Hastings · Havelock North · Since <?= e($site['founded']) ?></p>
         <h1 id="hero-title" class="display">Where Indian Classical Heritage Meets Contemporary Aotearoa Theatre</h1>
@@ -110,7 +112,7 @@ $pillars = [
             <?php foreach ($productions as $p): ?>
                 <li class="scroller__item">
                     <article class="card card--link card--media">
-                        <?= View::partial('public/partials/media', ['ratio' => '4x5', 'label' => $p['title']]) ?>
+                        <?= View::partial('public/partials/media', ['image' => image($p['slug'], $p['cover']), 'alt' => '', 'ratio' => '4x5', 'fit' => $p['cover_fit'], 'sizes' => '300px', 'label' => $p['title']]) ?>
                         <div class="card__body">
                             <p class="eyebrow"><?= $p['year'] ? e($p['year']) . ' · ' : '' ?>Krishni Productions</p>
                             <h3><a class="card__link" href="/productions#<?= e($p['slug']) ?>"><?= e($p['title']) ?></a></h3>
@@ -121,7 +123,7 @@ $pillars = [
             <?php endforeach; ?>
             <li class="scroller__item">
                 <article class="card card--link card--media card--band">
-                    <?= View::partial('public/partials/media', ['ratio' => '4x5', 'label' => 'Live music']) ?>
+                    <?= View::partial('public/partials/media', ['image' => image('music', '04'), 'alt' => '', 'ratio' => '4x5', 'sizes' => '300px', 'label' => 'Live music']) ?>
                     <div class="card__body">
                         <p class="eyebrow">Live music · Est. <?= e($music['founded']) ?></p>
                         <h3><a class="card__link" href="/music"><?= e($music['name']) ?></a></h3>

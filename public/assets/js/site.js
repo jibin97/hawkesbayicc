@@ -170,6 +170,124 @@
     var success = document.querySelector('[data-form-success]');
     if (success) success.focus();
 
+    // ---------- Dialog helper (lightbox + bio pop-ups) ----------
+    // Built only when <dialog> is supported; otherwise links open the photo and bios expand in place.
+    var canDialog = typeof HTMLDialogElement === 'function';
+
+    function makeDialog(className, label) {
+        var d = document.createElement('dialog');
+        d.className = 'modal ' + className;
+        d.setAttribute('aria-label', label);
+        d.innerHTML = '<button type="button" class="modal__close" aria-label="Close">' +
+            '<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>';
+        d.querySelector('.modal__close').addEventListener('click', function () { d.close(); });
+        // Click on the backdrop (outside the content box) closes.
+        d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+        document.body.appendChild(d);
+        return d;
+    }
+    function lockScroll(dialog) {
+        document.documentElement.classList.add('has-modal');
+        dialog.addEventListener('close', function () { document.documentElement.classList.remove('has-modal'); }, { once: true });
+    }
+
+    // ---------- Gallery lightbox ----------
+    var galleries = document.querySelectorAll('[data-gallery]');
+    if (canDialog && galleries.length) {
+        var lb = makeDialog('lightbox', 'Photo viewer');
+        lb.insertAdjacentHTML('beforeend',
+            '<figure class="lightbox__figure"><img class="lightbox__img" alt=""><figcaption class="lightbox__caption" aria-live="polite"></figcaption></figure>' +
+            '<button type="button" class="lightbox__nav lightbox__nav--prev" aria-label="Previous photo"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+            '<button type="button" class="lightbox__nav lightbox__nav--next" aria-label="Next photo"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>');
+        var lbImg = lb.querySelector('.lightbox__img');
+        var lbCap = lb.querySelector('.lightbox__caption');
+        var items = [], index = 0, title = '', opener = null;
+
+        function show(i) {
+            index = (i + items.length) % items.length;
+            var a = items[index];
+            lbImg.src = a.href;
+            lbImg.alt = a.querySelector('img').alt;
+            lbImg.width = +a.dataset.w; lbImg.height = +a.dataset.h;
+            lbCap.textContent = title + ' · ' + (index + 1) + ' of ' + items.length;
+            // Warm the cache for the neighbours so prev/next feel instant.
+            [index - 1, index + 1].forEach(function (n) {
+                var b = items[(n + items.length) % items.length];
+                if (b) { var pre = new Image(); pre.src = b.href; }
+            });
+        }
+        lb.querySelector('.lightbox__nav--prev').addEventListener('click', function () { show(index - 1); });
+        lb.querySelector('.lightbox__nav--next').addEventListener('click', function () { show(index + 1); });
+        lb.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowLeft') { e.preventDefault(); show(index - 1); }
+            if (e.key === 'ArrowRight') { e.preventDefault(); show(index + 1); }
+        });
+        // Swipe left/right on touch screens.
+        var startX = null;
+        lb.addEventListener('pointerdown', function (e) { startX = e.clientX; });
+        lb.addEventListener('pointerup', function (e) {
+            if (startX === null) return;
+            var dx = e.clientX - startX; startX = null;
+            if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+        });
+        lb.addEventListener('close', function () { lbImg.removeAttribute('src'); if (opener) opener.focus(); });
+
+        galleries.forEach(function (g) {
+            var links = Array.prototype.slice.call(g.querySelectorAll('a[data-lightbox]'));
+            links.forEach(function (a, i) {
+                a.addEventListener('click', function (e) {
+                    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return; // allow "open in new tab"
+                    e.preventDefault();
+                    items = links; title = g.dataset.gallery; opener = a;
+                    show(i);
+                    lb.showModal(); lockScroll(lb);
+                    lb.querySelector('.lightbox__nav--next').focus();
+                });
+            });
+        });
+    }
+
+    // ---------- Team bios as pop-ups ----------
+    var bios = document.querySelectorAll('[data-bio]');
+    if (canDialog && bios.length) {
+        var bd = makeDialog('bio-modal', 'Biography');
+        var bdBody = document.createElement('div');
+        bdBody.className = 'bio-modal__body';
+        bd.appendChild(bdBody);
+        var bioOpener = null;
+        bd.addEventListener('close', function () { if (bioOpener) bioOpener.focus(); });
+
+        bios.forEach(function (details) {
+            var summary = details.querySelector('summary');
+            summary.setAttribute('aria-haspopup', 'dialog');
+            summary.addEventListener('click', function (e) {
+                e.preventDefault(); // keep <details> closed; show the dialog instead
+                var card = details.closest('.team-card');
+                var name = card.querySelector('h3').textContent;
+                var photo = card.querySelector('img.avatar');
+                bdBody.innerHTML = '';
+                var head = document.createElement('header');
+                head.className = 'bio-modal__head';
+                if (photo) {
+                    var big = document.createElement('img');
+                    big.className = 'bio-modal__photo';
+                    big.src = photo.currentSrc || photo.src; big.alt = ''; big.width = 160; big.height = 160;
+                    head.appendChild(big);
+                }
+                var h = document.createElement('h2'); h.id = 'bio-modal-title'; h.textContent = name;
+                var wrap = document.createElement('div'); wrap.appendChild(h);
+                wrap.appendChild(card.querySelector('.badge').cloneNode(true));
+                head.appendChild(wrap);
+                bdBody.appendChild(head);
+                bdBody.appendChild(details.querySelector('.bio__body').cloneNode(true));
+                bd.setAttribute('aria-labelledby', 'bio-modal-title');
+                bioOpener = summary;
+                bd.showModal(); lockScroll(bd);
+                bdBody.scrollTop = 0;
+            });
+        });
+    }
+
     // ---------- Scroll reveal ----------
     var reveals = document.querySelectorAll('.reveal');
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

@@ -15,6 +15,7 @@ return [
     'founded'    => 2015,
     'tagline'    => 'Art has the power to Transform, Illuminate, Educate, Inspire and Motivate!',
     'summary'    => "Indian classical dance, theatre and music in Hawke's Bay, Aotearoa New Zealand, since 2015.",
+    'url'        => 'https://hawkesbayicc.nz',   // canonical base for SEO links (no trailing slash)
 
     'contact' => [
         'phone_display' => '021 1642979',

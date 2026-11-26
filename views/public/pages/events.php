@@ -82,13 +82,15 @@ $upcoming = upcoming_events($events['upcoming']);
                 <li class="timeline__item reveal" id="made-<?= e($item['year']) ?>">
                     <span class="timeline__year"><?= e($item['year']) ?></span>
                     <article class="card card--media timeline__card">
-                        <?= View::partial('public/partials/media', ['ratio' => '3x2', 'label' => 'M.A.D.E ' . $item['year']]) ?>
+                        <?php $photos = images('made-' . $item['year']); ?>
+                        <?= View::partial('public/partials/media', ['image' => $photos !== [] ? reset($photos) : null, 'alt' => 'On stage at ' . $item['title'], 'ratio' => '3x2', 'sizes' => '(min-width: 48em) 600px, 100vw', 'label' => 'M.A.D.E ' . $item['year']]) ?>
                         <div class="card__body">
                             <h3><?= e($item['title']) ?></h3>
                             <?php if (!empty($item['featuring'])): ?><p>Featuring <em><?= e($item['featuring']) ?></em></p><?php endif; ?>
+                            <?php if (!empty($item['venue'])): ?><p class="text-muted text-small"><?= icon('pin', 16) ?> <?= e($item['venue']) ?></p><?php endif; ?>
                             <?php if (!empty($item['note'])): ?><p class="text-muted"><?= e($item['note']) ?></p><?php endif; ?>
                             <?php if (!empty($item['charity'])): ?><p class="event-banner__charity">Supporting <strong><?= e($item['charity']) ?></strong></p><?php endif; ?>
-                            <p class="text-muted text-small">Photo highlights coming soon.</p>
+                            <?= View::partial('public/partials/gallery', ['images' => $photos, 'title' => $item['title'], 'id' => 'gallery-made-' . $item['year'], 'visible' => 0]) ?>
                         </div>
                     </article>
                 </li>

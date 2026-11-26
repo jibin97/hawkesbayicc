@@ -10,14 +10,19 @@ use App\View;
 $academy   = Content::get('academy');
 $timetable = $academy['timetable'];
 ?>
-<section class="page-hero" aria-labelledby="page-title">
-    <div class="wrap prose">
+<section class="page-hero epk-hero" aria-labelledby="page-title">
+    <div class="wrap epk-hero__grid">
+        <div>
         <p class="eyebrow">Classical Academy</p>
         <h1 id="page-title">Indian classical dance classes in Hawke's Bay</h1>
         <p class="lead">Learn the dance traditions of India with HBICC: technique, rhythm and storytelling, with a stage to perform on every year.</p>
         <div class="button-row">
             <a class="button" href="#enrol">Enrol online</a>
             <a class="button button--outline" href="#faq">Questions?</a>
+        </div>
+        </div>
+        <div class="reveal">
+            <?= View::partial('public/partials/media', ['image' => image('site', 'duet'), 'alt' => 'Two HBICC students performing classical Indian dance on stage', 'ratio' => '3x2', 'sizes' => '(min-width: 64em) 560px, 100vw', 'eager' => true]) ?>
         </div>
     </div>
 </section>

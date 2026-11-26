@@ -14,6 +14,7 @@ define('APP_ROOT', dirname(__DIR__));
 
 require APP_ROOT . '/src/bootstrap.php';
 
+use App\Forms\FormHandler;
 use App\Http\Router;
 use App\View;
 
@@ -30,14 +31,59 @@ $pages = [
     '/contact'     => ['contact', 'Contact', "Contact the Hawke's Bay Indian Cultural Centre: call 021 1642979 or send us a message."],
 ];
 
+// Pages that post a form back to themselves: path => [form name, section anchor]
+$forms = [
+    '/academy' => ['enrolment', 'enrol'],
+    '/music'   => ['booking', 'book'],
+    '/contact' => ['contact', 'message'],
+];
+
 foreach ($pages as $path => [$template, $title, $description]) {
-    $router->add($path, ['GET', 'HEAD'], static function () use ($template, $title, $description, $path): void {
+    $form    = $forms[$path][0] ?? null;
+    $anchor  = $forms[$path][1] ?? null;
+    $methods = $form !== null ? ['GET', 'HEAD', 'POST'] : ['GET', 'HEAD'];
+
+    $router->add($path, $methods, static function () use ($template, $title, $description, $path, $form, $anchor): void {
         public_headers();
-        header('Cache-Control: public, max-age=300');
+        $formState = null;
+
+        if ($form !== null && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $result = FormHandler::handle($form, $_POST, (string) ($_SERVER['REMOTE_ADDR'] ?? ''));
+
+            if ($result['status'] === 'sent') {
+                // Post/Redirect/Get, then send the email alert after the visitor has their response.
+                header('Location: ' . $path . '?sent=' . $form . '#' . $anchor, true, 303);
+                header('Content-Length: 0');
+                header('Connection: close');
+                if (function_exists('fastcgi_finish_request')) {
+                    fastcgi_finish_request();
+                } else {
+                    ignore_user_abort(true);
+                    flush();
+                }
+                if ($result['after'] !== null) {
+                    ($result['after'])();
+                }
+                return;
+            }
+
+            http_response_code(422);
+            header('Cache-Control: no-store');
+            $formState = $result;
+        } else {
+            header('Cache-Control: public, max-age=300');
+            if ($form !== null && ($_GET['sent'] ?? null) === $form) {
+                $formState = ['status' => 'sent'];
+                header('Cache-Control: no-store');
+            }
+        }
+
         echo View::page($template, [
             'title'       => $title,
             'description' => $description,
             'path'        => $path,
+            'formState'   => $formState,
+            'formAction'  => $form !== null ? $path . '#' . $anchor : null,
         ]);
     });
 }
@@ -60,6 +106,9 @@ $admin = static fn (string $file): callable => static function () use ($file): v
 $router->add('/admin',        ['GET', 'HEAD'],         $admin('index.php'));
 $router->add('/admin/login',  ['GET', 'HEAD', 'POST'], $admin('login.php'));
 $router->add('/admin/logout', ['POST'],                $admin('logout.php'));
+$router->add('/admin/inquiries',      ['GET', 'HEAD'], $admin('inquiries.php'));
+$router->add('/admin/inquiry',        ['GET', 'HEAD'], $admin('inquiry.php'));
+$router->add('/admin/inquiry/status', ['POST'],        $admin('inquiry-status.php'));
 
 // ---------- Dispatch ----------
 try {

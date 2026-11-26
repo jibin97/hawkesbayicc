@@ -41,7 +41,7 @@ $c = $site['contact'];
 </section>
 
 <section class="section section--light" id="message" aria-labelledby="message-title">
-    <div class="wrap split">
+    <div class="wrap split split--wide-right">
         <header class="section-heading">
             <p class="eyebrow">Send a message</p>
             <h2 id="message-title">Quick enquiry</h2>
@@ -53,10 +53,11 @@ $c = $site['contact'];
                 <?php endforeach; ?>
             </ul>
         </header>
-        <?= View::partial('public/partials/form-slot', [
-            'site'    => $site,
-            'heading' => 'Online enquiry form opens soon',
-            'text'    => "In the meantime, call or email us and we'll get back to you.",
+        <?= View::partial('public/partials/form', [
+            'form'   => 'contact',
+            'action' => $formAction,
+            'state'  => $formState,
+            'site'   => $site,
         ]) ?>
     </div>
 </section>

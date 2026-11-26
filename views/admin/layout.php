@@ -24,6 +24,11 @@ $user ??= null;
         <div class="wrap header-row">
             <span class="brand"><?= e(site_name()) ?> <small>Admin</small></span>
             <?php if ($user !== null): ?>
+                <nav class="admin-nav" aria-label="Admin">
+                    <a href="/admin" <?= ($active ?? 'dashboard') === 'dashboard' ? 'aria-current="page"' : '' ?>>Dashboard</a>
+                    <a href="/admin/inquiries" <?= ($active ?? '') === 'inquiries' ? 'aria-current="page"' : '' ?>>Inquiries</a>
+                    <a href="/" target="_blank" rel="noopener">View site<span class="visually-hidden"> (opens in a new tab)</span></a>
+                </nav>
                 <form method="post" action="/admin/logout" class="logout">
                     <span class="who"><?= e($user['name']) ?></span>
                     <input type="hidden" name="csrf" value="<?= e($csrf) ?>">

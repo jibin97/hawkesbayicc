@@ -91,16 +91,17 @@ foreach ($site['social'] as $s) {
 </section>
 
 <section class="section section--light" id="book" aria-labelledby="book-title">
-    <div class="wrap split">
+    <div class="wrap split split--wide-right">
         <header class="section-heading">
             <p class="eyebrow">Bookings</p>
             <h2 id="book-title">Book the band for your event</h2>
             <p class="text-muted">Tell us the date, venue and type of event and we'll get back to you with availability.</p>
         </header>
-        <?= View::partial('public/partials/form-slot', [
-            'site'    => $site,
-            'heading' => 'Online booking form opens soon',
-            'text'    => 'In the meantime, call or email us with your event date and location.',
+        <?= View::partial('public/partials/form', [
+            'form'   => 'booking',
+            'action' => $formAction,
+            'state'  => $formState,
+            'site'   => $site,
         ]) ?>
     </div>
 </section>

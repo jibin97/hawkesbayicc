@@ -127,16 +127,23 @@ $timetable = $academy['timetable'];
 
 <section class="section section--light" id="enrol" aria-labelledby="enrol-title">
     <div class="wrap">
-        <div class="split">
+        <div class="split split--wide-right">
             <header class="section-heading">
                 <p class="eyebrow">Enrolment</p>
                 <h2 id="enrol-title">Enrol a student</h2>
                 <p class="text-muted">It takes a few minutes. We'll contact you to confirm the class and start date.</p>
+                <h3 class="label-heading" id="terms">Terms and conditions</h3>
+                <ol class="terms-list">
+                    <?php foreach ($academy['policies'] as $policy): ?>
+                        <li><?= e($policy['text']) ?></li>
+                    <?php endforeach; ?>
+                </ol>
             </header>
-            <?= View::partial('public/partials/form-slot', [
-                'site'    => $site,
-                'heading' => 'Online enrolment opens soon',
-                'text'    => "In the meantime, call or email us with the student's name, age and the style they'd like to learn.",
+            <?= View::partial('public/partials/form', [
+                'form'   => 'enrolment',
+                'action' => $formAction,
+                'state'  => $formState,
+                'site'   => $site,
             ]) ?>
         </div>
     </div>

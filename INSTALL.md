@@ -24,6 +24,22 @@ cp .env.example .env
 Edit `.env` and fill in the database host (`127.0.0.1`), port, database name, user and password chosen in step 4.
 Never commit `.env`.
 
+The website forms also need these keys in `.env` (add any that `.env.example` doesn't list yet):
+
+| Key | Required | What it is |
+|---|---|---|
+| `APP_KEY` | **yes** | Secret (≥32 chars) that signs form tokens. Generate: `php -r 'echo bin2hex(random_bytes(32)), PHP_EOL;'` |
+| `APP_URL` | no | Public site URL, e.g. `https://hawkesbayicc.nz`; used for the admin link in alert emails |
+| `MAIL_HOST` | no | SMTP server. **Leave empty to disable email alerts**: submissions are still saved and shown in the admin inbox |
+| `MAIL_PORT` | no | `587` (STARTTLS, default) or `465` (SSL) |
+| `MAIL_ENCRYPTION` | no | `tls` (STARTTLS, default), `ssl`, or `none` (local testing only) |
+| `MAIL_USERNAME` / `MAIL_PASSWORD` | no | SMTP login (often an app password) |
+| `MAIL_FROM_ADDRESS` | if mail on | Sender address, e.g. `website@hawkesbayicc.nz` (must be allowed by your SMTP provider) |
+| `MAIL_FROM_NAME` | no | Sender name, e.g. `HBICC Website` |
+| `MAIL_NOTIFY_TO` | if mail on | Who receives alerts; comma-separated, e.g. `info@hawkesbayicc.nz` |
+
+Without `APP_KEY` the forms show a "call or email us" panel instead of the form.
+
 ## 4. Create the database and its user
 Connect as a MySQL administrator (always over TCP, `-h 127.0.0.1`):
 ```sh
@@ -50,6 +66,7 @@ Migrations live in `database/migrations/` and must run in filename order:
 | 1 | `001_create_users.sql` | `users` (admin accounts) |
 | 2 | `002_create_images.sql` | `images` (uploaded image paths) — needs `users` |
 | 3 | `003_create_contents.sql` | `contents` (site content) — needs `images`, `users` |
+| 4 | `004_create_inquiries.sql` | `inquiries` (enrolment, band booking and contact form submissions) |
 
 Run them all, in order, with a single password prompt (the shell sorts the glob by name; `mysql` stops at the first error):
 ```sh
@@ -59,7 +76,12 @@ Verify:
 ```sh
 mysql -h 127.0.0.1 -u app_user -p app_db -e "SHOW TABLES;"
 ```
-Expected: `contents`, `images`, `users`.
+Expected: `contents`, `images`, `inquiries`, `users`.
+
+Already have a database from an earlier version? Run just the new migration(s), e.g.:
+```sh
+mysql -h 127.0.0.1 -u app_user -p app_db < database/migrations/004_create_inquiries.sql
+```
 
 Each migration uses `CREATE TABLE IF NOT EXISTS`, so re-running on an existing database is harmless. Never edit a migration that has already been applied — add a new numbered file instead.
 
@@ -81,6 +103,7 @@ php -S localhost:8000 -t public
 ```
 - Site: http://localhost:8000
 - Admin: http://localhost:8000/admin
+- Form submissions: http://localhost:8000/admin/inquiries
 
 ## Starting over (wipe and reinstall)
 **This permanently deletes all data in the database**, including users and content. Uploaded image files on disk are not removed by this.

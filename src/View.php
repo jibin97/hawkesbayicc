@@ -36,7 +36,7 @@ final class View
      */
     public static function page(string $page, array $vars = []): string
     {
-        $vars += ['title' => null, 'description' => '', 'path' => ''];
+        $vars += ['title' => null, 'description' => '', 'path' => '', 'formState' => null, 'formAction' => null];
         $vars['site'] = Content::get('site');
 
         return self::render('public/pages/' . $page, $vars, 'public/layout');

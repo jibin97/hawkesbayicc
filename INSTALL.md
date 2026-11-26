@@ -34,12 +34,13 @@ Then run, replacing the name and password with your own (they must match `.env`)
 CREATE DATABASE IF NOT EXISTS app_db
     CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE USER IF NOT EXISTS 'root'@'127.0.0.1' IDENTIFIED BY 'root';
-CREATE USER IF NOT EXISTS 'root'@'localhost' IDENTIFIED BY 'root';
-GRANT ALL PRIVILEGES ON app_db.* TO 'root'@'127.0.0.1';
-GRANT ALL PRIVILEGES ON app_db.* TO 'root'@'localhost';
+CREATE USER IF NOT EXISTS 'app_user'@'127.0.0.1' IDENTIFIED BY 'change-me';
+CREATE USER IF NOT EXISTS 'app_user'@'localhost' IDENTIFIED BY 'change-me';
+GRANT ALL PRIVILEGES ON app_db.* TO 'app_user'@'127.0.0.1';
+GRANT ALL PRIVILEGES ON app_db.* TO 'app_user'@'localhost';
 ```
 (Both host entries are created because MySQL may see a `127.0.0.1` connection as either, depending on name resolution.)
+Use a dedicated user like this rather than `root`, and a strong password: the app only needs access to its own database.
 
 ## 5. Run the database migrations
 Migrations live in `database/migrations/` and must run in filename order:
@@ -52,7 +53,7 @@ Migrations live in `database/migrations/` and must run in filename order:
 
 Run them all, in order, with a single password prompt (the shell sorts the glob by name; `mysql` stops at the first error):
 ```sh
-cat database/migrations/*.sql | mysql -h 127.0.0.1 -u root -p app_db
+cat database/migrations/*.sql | mysql -h 127.0.0.1 -u app_user -p app_db
 ```
 Verify:
 ```sh
@@ -63,7 +64,7 @@ Expected: `contents`, `images`, `users`.
 Each migration uses `CREATE TABLE IF NOT EXISTS`, so re-running on an existing database is harmless. Never edit a migration that has already been applied — add a new numbered file instead.
 
 ## 6. Create the first admin user
-Requires step 3 (`.env` with `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASS`) and step 5 (migrations).
+Requires step 3 (`.env` with `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USERNAME`, `DB_PASSWORD`) and step 5 (migrations).
 ```sh
 php bin/create-admin.php
 ```

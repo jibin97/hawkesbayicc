@@ -1,0 +1,177 @@
+/*
+ * Base styles and components. Uses only variables from theme.css — no raw colours or sizes here.
+ */
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+body, h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd { margin: 0; }
+img, svg, video { display: block; max-width: 100%; height: auto; }
+input, button, textarea, select { font: inherit; color: inherit; }
+
+/* ---------- Base typography ---------- */
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: var(--body-size);
+    font-weight: var(--body-weight);
+    line-height: var(--body-leading);
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--color-heading);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+}
+h1 { font-size: var(--h1-size); font-weight: var(--h1-weight); line-height: var(--h1-leading); }
+h2 { font-size: var(--h2-size); font-weight: var(--h2-weight); line-height: var(--h2-leading); }
+h3 { font-size: var(--h3-size); font-weight: var(--h3-weight); line-height: var(--h3-leading); }
+h4 { font-size: var(--h4-size); font-weight: var(--h4-weight); line-height: var(--h4-leading); }
+h5 { font-size: var(--h5-size); font-weight: var(--h5-weight); line-height: var(--h5-leading); }
+h6 { font-size: var(--h6-size); font-weight: var(--h6-weight); line-height: var(--h6-leading); }
+
+h1, h2, h3, h4, h5, h6, p, ul, ol, dl, blockquote { margin-block-end: var(--space-4); }
+:is(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, blockquote):last-child { margin-block-end: 0; }
+
+small, .text-small { font-size: var(--small-size); }
+.text-muted { color: var(--color-text-muted); }
+.lead { font-size: var(--lead-size); font-weight: var(--lead-weight); color: var(--color-text-muted); }
+.eyebrow {
+    font-size: var(--eyebrow-size);
+    font-weight: var(--eyebrow-weight);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-secondary);
+}
+code, kbd, pre { font-family: var(--font-mono); font-size: 0.9em; }
+
+a { color: var(--color-link); text-underline-offset: 0.2em; transition: color var(--transition); }
+a:hover { color: var(--color-link-hover); }
+
+::selection { background: var(--color-selection-bg); color: var(--color-selection-text); }
+
+:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
+
+/* ---------- Layout ---------- */
+.wrap { width: 100%; max-width: var(--container-max); margin-inline: auto; padding-inline: var(--gutter); }
+main.wrap { flex: 1; padding-block: var(--space-10); }
+
+.skip-link { position: absolute; left: -9999px; }
+.skip-link:focus {
+    left: var(--space-4);
+    top: var(--space-2);
+    z-index: 10;
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-surface);
+    border-radius: var(--radius-sm);
+}
+
+/* ---------- Header & footer ---------- */
+.site-header {
+    background: var(--color-surface);
+    border-bottom: var(--border-width) solid var(--color-border);
+    box-shadow: inset 0 -2px 0 var(--color-primary);
+    padding-block: var(--space-3);
+}
+.header-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+.brand {
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    font-size: var(--text-lg);
+    font-weight: var(--weight-bold);
+    text-decoration: none;
+}
+.brand small { color: var(--color-secondary); font-weight: var(--weight-medium); font-size: var(--text-sm); }
+
+.site-footer {
+    border-top: var(--border-width) solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: var(--small-size);
+    padding-block: var(--space-6);
+}
+
+/* ---------- Hero ---------- */
+.hero { padding-block: var(--space-8); }
+.hero h1 { margin-block-end: var(--space-3); }
+.hero p { font-size: var(--lead-size); color: var(--color-text-muted); max-width: 60ch; }
+
+/* ---------- Card ---------- */
+.card {
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-md);
+}
+.login { max-width: var(--container-narrow); margin: var(--space-8) auto; }
+.login h1 { font-size: var(--h3-size); }
+
+/* ---------- Forms ---------- */
+label {
+    display: block;
+    margin: var(--space-4) 0 var(--space-1);
+    font-size: var(--label-size);
+    font-weight: var(--label-weight);
+}
+input[type="email"], input[type="password"], input[type="text"], textarea, select {
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-bg);
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition);
+}
+input:hover, textarea:hover, select:hover { border-color: var(--color-text-muted); }
+
+/* ---------- Buttons ---------- */
+button, .button {
+    display: inline-block;
+    margin-top: var(--space-5);
+    padding: var(--space-2) var(--space-5);
+    border: 0;
+    border-radius: var(--radius-md);
+    background: var(--color-primary-fill);
+    color: var(--color-on-primary);
+    font-size: var(--button-size);
+    font-weight: var(--button-weight);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--transition);
+}
+button:hover, .button:hover { background: var(--color-primary-fill-hover); color: var(--color-on-primary); }
+
+.button-secondary { background: var(--color-secondary); color: var(--color-on-secondary); }
+.button-secondary:hover { background: var(--color-secondary-hover); color: var(--color-on-secondary); }
+
+.logout { display: flex; align-items: center; gap: var(--space-3); }
+.logout button {
+    margin-top: 0;
+    padding: var(--space-1) var(--space-3);
+    background: transparent;
+    border: var(--border-width) solid var(--color-border-strong);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+}
+.logout button:hover { background: var(--color-surface-alt); border-color: var(--color-secondary); }
+.who { color: var(--color-text-muted); font-size: var(--text-sm); }
+
+/* ---------- Alerts ---------- */
+.error, .notice, .alert {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    border-left: 3px solid currentColor;
+    font-size: var(--small-size);
+}
+.error   { background: var(--color-danger-bg);  color: var(--color-danger); }
+.notice  { background: var(--color-success-bg); color: var(--color-success); }
+
+/* ---------- Definition list ---------- */
+.details { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-1) var(--space-4); }
+.details dt { font-weight: var(--weight-semibold); color: var(--color-text-muted); }

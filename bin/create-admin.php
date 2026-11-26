@@ -137,7 +137,7 @@ try {
         fail("A user with email {$email} already exists.");
     }
     $hint = match ($driverCode ?? (int) $e->getCode()) {
-        1045    => 'access denied: check DB_USER / DB_PASS in .env',
+        1045    => 'access denied: check DB_USERNAME / DB_PASSWORD in .env',
         1049    => 'unknown database: check DB_NAME in .env',
         1146    => 'users table missing: run the migrations first (see INSTALL.md)',
         2002    => 'cannot reach MySQL: is it running on DB_HOST / DB_PORT?',

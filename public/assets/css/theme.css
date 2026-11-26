@@ -1,0 +1,129 @@
+/*
+ * Theme configuration — every look-and-feel decision lives here as a CSS custom property.
+ * site.css uses only these variables; to re-theme the site, edit this file only.
+ *
+ * Contrast notes (WCAG AA needs 4.5:1 for normal text, 3:1 for large text and UI borders):
+ *   text on bg 18.6 · text on surface 17.4 · muted on surface 6.0 · brass on surface 10.1
+ *   on-primary on primary-fill 5.1 · input border on surface 3.7
+ *   Brand vermilion #E03C31 is 4.0 with white text and 4.3 as text on surface — below AA for
+ *   normal text — so buttons use a slightly deeper fill and vermilion text uses a lighter tint.
+ */
+
+:root {
+    color-scheme: dark;
+
+    /* ---------- Brand palette (raw values; prefer the semantic tokens below) ---------- */
+    --palette-stage-black:   #0A0809;
+    --palette-dark-velvet:   #161113;
+    --palette-velvet-raised: #221A1D;
+    --palette-vermilion:     #E03C31;   /* Sindoor Vermilion */
+    --palette-brass:         #E5B869;   /* Brass / Zari Thread */
+    --palette-silk-white:    #FAF6F5;
+    --palette-mauve-grey:    #9C8E91;
+
+    /* ---------- Colours: surfaces ---------- */
+    --color-bg:           var(--palette-stage-black);
+    --color-surface:      var(--palette-dark-velvet);
+    --color-surface-alt:  var(--palette-velvet-raised);
+    --color-border:       #3A2F33;   /* decorative dividers */
+    --color-border-strong:#7A6A6F;   /* form field outlines (≥3:1) */
+
+    /* ---------- Colours: text ---------- */
+    --color-text:         var(--palette-silk-white);
+    --color-text-muted:   var(--palette-mauve-grey);
+    --color-heading:      var(--palette-silk-white);
+
+    /* ---------- Colours: brand accents ---------- */
+    --color-primary:            var(--palette-vermilion);  /* accents, rules, highlights */
+    --color-primary-fill:       #C4302A;                   /* button backgrounds */
+    --color-primary-fill-hover: #A9281F;
+    --color-primary-text:       #F07A70;                   /* vermilion as readable text */
+    --color-on-primary:         var(--palette-silk-white);
+
+    --color-secondary:          var(--palette-brass);
+    --color-secondary-hover:    #F0CB8A;
+    --color-on-secondary:       var(--palette-stage-black);
+
+    /* ---------- Colours: interaction ---------- */
+    --color-link:         var(--palette-brass);
+    --color-link-hover:   #F0CB8A;
+    --color-focus:        var(--palette-brass);
+    --color-selection-bg: var(--palette-vermilion);
+    --color-selection-text: var(--palette-silk-white);
+
+    /* ---------- Colours: status (text / background pairs) ---------- */
+    --color-danger:       #FF9A90;  --color-danger-bg:  #2A1412;
+    --color-success:      #8FD9A0;  --color-success-bg: #10241A;
+    --color-warning:      #F2C879;  --color-warning-bg: #2A2110;
+    --color-info:         #9CC3F5;  --color-info-bg:    #0F1B2C;
+
+    /* ---------- Fonts ---------- */
+    --font-body:    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-heading: var(--font-body);
+    --font-mono:    ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+    /* ---------- Type scale (rem; larger sizes shrink on small screens) ---------- */
+    --text-xs:   0.75rem;                                  /* 12px */
+    --text-sm:   0.875rem;                                 /* 14px */
+    --text-base: 1rem;                                     /* 16px */
+    --text-lg:   1.125rem;                                 /* 18px */
+    --text-xl:   1.25rem;                                  /* 20px */
+    --text-2xl:  clamp(1.375rem, 1.2rem + 0.8vw, 1.5rem);  /* 22–24px */
+    --text-3xl:  clamp(1.625rem, 1.35rem + 1.2vw, 1.875rem); /* 26–30px */
+    --text-4xl:  clamp(2rem, 1.5rem + 2.2vw, 2.75rem);     /* 32–44px */
+
+    /* ---------- Font weights ---------- */
+    --weight-regular:  400;
+    --weight-medium:   500;
+    --weight-semibold: 600;
+    --weight-bold:     700;
+
+    /* ---------- Line height & letter spacing ---------- */
+    --leading-tight:   1.2;
+    --leading-snug:    1.35;
+    --leading-normal:  1.6;
+    --tracking-tight:  -0.015em;
+    --tracking-normal: 0;
+    --tracking-wide:   0.06em;
+
+    /* ---------- Text styles (size / weight / line-height per role) ---------- */
+    --h1-size: var(--text-4xl);  --h1-weight: var(--weight-bold);     --h1-leading: var(--leading-tight);
+    --h2-size: var(--text-3xl);  --h2-weight: var(--weight-bold);     --h2-leading: var(--leading-tight);
+    --h3-size: var(--text-2xl);  --h3-weight: var(--weight-semibold); --h3-leading: var(--leading-snug);
+    --h4-size: var(--text-xl);   --h4-weight: var(--weight-semibold); --h4-leading: var(--leading-snug);
+    --h5-size: var(--text-lg);   --h5-weight: var(--weight-semibold); --h5-leading: var(--leading-snug);
+    --h6-size: var(--text-base); --h6-weight: var(--weight-semibold); --h6-leading: var(--leading-snug);
+    --body-size:    var(--text-base); --body-weight:    var(--weight-regular);  --body-leading: var(--leading-normal);
+    --lead-size:    var(--text-lg);   --lead-weight:    var(--weight-regular);
+    --small-size:   var(--text-sm);
+    --label-size:   var(--text-sm);   --label-weight:   var(--weight-semibold);
+    --button-size:  var(--text-base); --button-weight:  var(--weight-semibold);
+    --eyebrow-size: var(--text-xs);   --eyebrow-weight: var(--weight-semibold);
+
+    /* ---------- Spacing (4px base) ---------- */
+    --space-1: 0.25rem;  --space-2: 0.5rem;   --space-3: 0.75rem;  --space-4: 1rem;
+    --space-5: 1.25rem;  --space-6: 1.5rem;   --space-8: 2rem;     --space-10: 2.5rem;
+    --space-12: 3rem;    --space-16: 4rem;
+
+    /* ---------- Shape & depth ---------- */
+    --radius-sm:   4px;
+    --radius-md:   8px;
+    --radius-lg:   14px;
+    --radius-full: 999px;
+    --border-width: 1px;
+    --focus-ring:  3px solid var(--color-focus);
+    --shadow-sm:   0 1px 2px rgb(0 0 0 / 0.5);
+    --shadow-md:   0 8px 24px rgb(0 0 0 / 0.55);
+
+    /* ---------- Layout ---------- */
+    --container-max: 1080px;
+    --container-narrow: 420px;
+    --gutter: var(--space-4);
+
+    /* ---------- Motion ---------- */
+    --transition: 150ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root { --transition: 0ms; }
+}

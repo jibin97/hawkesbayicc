@@ -38,7 +38,7 @@ final class Connection
             Env::require('DB_NAME')
         );
 
-        self::$pdo = new PDO($dsn, Env::require('DB_USER'), Env::get('DB_PASS', '') ?? '', [
+        self::$pdo = new PDO($dsn, Env::require('DB_USERNAME'), Env::get('DB_PASSWORD', '') ?? '', [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_EMULATE_PREPARES   => false,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

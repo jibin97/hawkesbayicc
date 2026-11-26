@@ -34,10 +34,10 @@ Then run, replacing the name and password with your own (they must match `.env`)
 CREATE DATABASE IF NOT EXISTS app_db
     CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE USER IF NOT EXISTS 'app_user'@'127.0.0.1' IDENTIFIED BY 'change-me';
-CREATE USER IF NOT EXISTS 'app_user'@'localhost' IDENTIFIED BY 'change-me';
-GRANT ALL PRIVILEGES ON app_db.* TO 'app_user'@'127.0.0.1';
-GRANT ALL PRIVILEGES ON app_db.* TO 'app_user'@'localhost';
+CREATE USER IF NOT EXISTS 'root'@'127.0.0.1' IDENTIFIED BY 'root';
+CREATE USER IF NOT EXISTS 'root'@'localhost' IDENTIFIED BY 'root';
+GRANT ALL PRIVILEGES ON app_db.* TO 'root'@'127.0.0.1';
+GRANT ALL PRIVILEGES ON app_db.* TO 'root'@'localhost';
 ```
 (Both host entries are created because MySQL may see a `127.0.0.1` connection as either, depending on name resolution.)
 
@@ -52,7 +52,7 @@ Migrations live in `database/migrations/` and must run in filename order:
 
 Run them all, in order, with a single password prompt (the shell sorts the glob by name; `mysql` stops at the first error):
 ```sh
-cat database/migrations/*.sql | mysql -h 127.0.0.1 -u app_user -p app_db
+cat database/migrations/*.sql | mysql -h 127.0.0.1 -u root -p app_db
 ```
 Verify:
 ```sh

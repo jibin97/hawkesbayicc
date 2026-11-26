@@ -21,4 +21,5 @@ Path-scoped rules in `.claude/rules/` load automatically when matching files are
 - Before implementing any multi-file feature, write a concise blueprint to `.ai-scratch/plan.md` and wait for approval.
 - Keep dependencies minimal; prefer native PHP 8+ PDO, prepared statements, and standard library features.
 - Always run the PHP lint command after editing `.php` files.
+- When adding a migration, seed, or setup script, add it to `INSTALL.md` in the correct order.
 - Use `/handoff` before `/clear` to persist session state to `.ai-scratch/handoff.md`.

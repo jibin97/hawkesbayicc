@@ -1,0 +1,13 @@
+# Claude Code — personal / ephemeral
+CLAUDE.local.md
+.claude/settings.local.json
+.ai-scratch/
+
+# PHP / environment
+/vendor/
+.env
+.env.local
+*.sqlite
+
+# macOS
+.DS_Store

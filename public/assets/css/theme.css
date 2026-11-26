@@ -112,6 +112,7 @@
     --radius-full: 999px;
     --border-width: 1px;
     --focus-ring:  3px solid var(--color-focus);
+    --touch-target: 44px;   /* minimum height/width for tappable controls */
     --shadow-sm:   0 1px 2px rgb(0 0 0 / 0.5);
     --shadow-md:   0 8px 24px rgb(0 0 0 / 0.55);
 

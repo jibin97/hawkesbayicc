@@ -25,6 +25,42 @@ function redirect(string $path, int $status = 303): void
     exit;
 }
 
+/**
+ * Events from content/events.php whose date is today or later, soonest first.
+ *
+ * @param list<array<string, mixed>> $events
+ * @return list<array<string, mixed>>
+ */
+function upcoming_events(array $events): array
+{
+    $today = (new DateTimeImmutable('today', new DateTimeZone('Pacific/Auckland')))->format('Y-m-d');
+    $future = array_values(array_filter(
+        $events,
+        static fn (array $e): bool => isset($e['date']) && is_string($e['date']) && $e['date'] >= $today
+    ));
+    usort($future, static fn (array $a, array $b): int => strcmp($a['date'], $b['date']));
+
+    return $future;
+}
+
+/** "2027-06-12" → "Saturday 12 June 2027" (NZ style). Returns the input unchanged if unparseable. */
+function format_date(string $ymd): string
+{
+    $date = DateTimeImmutable::createFromFormat('!Y-m-d', $ymd);
+
+    return $date === false ? $ymd : $date->format('l j F Y');
+}
+
+/** Initials for avatar placeholders: "Pauline Ellen Hayes" → "PH". */
+function initials(string $name): string
+{
+    $parts = preg_split('/\s+/', trim($name)) ?: [];
+    $first = $parts[0] ?? '';
+    $last  = count($parts) > 1 ? $parts[count($parts) - 1] : '';
+
+    return strtoupper(mb_substr($first, 0, 1) . mb_substr($last, 0, 1));
+}
+
 /** Response headers for every public page. */
 function public_headers(): void
 {

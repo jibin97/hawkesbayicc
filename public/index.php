@@ -42,6 +42,17 @@ foreach ($pages as $path => [$template, $title, $description]) {
     });
 }
 
+// ---------- Permanent redirects from the old WordPress site's URLs (keeps search rankings & links) ----------
+$router->redirect('/team', '/about#team');
+$router->redirect('/enrolment', '/academy#enrol');
+$router->redirect('/upcoming-events', '/events#upcoming');
+foreach (['shakuntala', 'sita-unsung', 'takshaka', 'wairua-paani'] as $slug) {
+    $router->redirect('/productions/gallery/' . $slug, '/productions#' . $slug);
+}
+foreach ([2017, 2018, 2019, 2021, 2023, 2025] as $year) {
+    $router->redirect('/events/gallery/made-' . $year, '/events#made-' . $year);
+}
+
 // ---------- Admin ----------
 $admin = static fn (string $file): callable => static function () use ($file): void {
     require APP_ROOT . '/admin/' . $file;

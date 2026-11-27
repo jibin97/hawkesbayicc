@@ -6,8 +6,7 @@
  *
  * Years, venues and partners below are from the productions' own posters (old site galleries, checked 2026-11).
  * CONFIRM for each: full synopsis, full credits, YouTube trailer id.
- * 'cover' = key of the card image in content/images.php (group = slug); 'cover_fit' = contain for posters
- * that must not be cropped. The gallery shows every other imported photo in the group.
+ * Cover and gallery photos are managed in the admin (/admin/images), keyed by slug.
  */
 
 declare(strict_types=1);
@@ -29,8 +28,6 @@ return [
         ],
         'partners'      => ['Cook Place Productions'],
         'youtube_id'    => null,
-        'cover'         => '00',
-        'cover_fit'     => 'contain',
     ],
     [
         'slug'      => 'sita-unsung',
@@ -46,8 +43,6 @@ return [
         ],
         'partners'      => ["Hawke's Bay Flying Trapeze"],
         'youtube_id'    => null,
-        'cover'         => '00',
-        'cover_fit'     => 'contain',
     ],
     [
         'slug'      => 'takshaka',
@@ -64,8 +59,6 @@ return [
         ],
         'partners'      => ["Hawke's Bay Flying Trapeze"],
         'youtube_id'    => null,
-        'cover'         => '02',
-        'cover_fit'     => 'cover',
     ],
     [
         'slug'      => 'wairua-paani',
@@ -78,7 +71,5 @@ return [
         'credits'       => [],   // CONFIRM
         'partners'      => ["Hawke's Bay Flying Trapeze", 'Wahanui Productions'],
         'youtube_id'    => null,
-        'cover'         => '07',
-        'cover_fit'     => 'cover',
     ],
 ];

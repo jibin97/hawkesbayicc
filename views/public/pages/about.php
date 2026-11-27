@@ -51,13 +51,13 @@ $timeline = [
             <p class="eyebrow">Leadership &amp; creative team</p>
             <h2 id="team-title">The people behind HBICC</h2>
         </header>
-        <div class="team-photo reveal"><?= View::partial('public/partials/media', ['image' => image('site', 'team-group'), 'alt' => "The HBICC team standing together under the centre's name in English and te reo Māori", 'ratio' => '3x2', 'fit' => 'contain', 'sizes' => '(min-width: 56em) 860px, 100vw']) ?></div>
+        <div class="team-photo reveal"><?= View::partial('public/partials/media', ['image' => image('team-group'), 'ratio' => '3x2', 'sizes' => '(min-width: 56em) 860px, 100vw']) ?></div>
 
         <ul class="team-grid">
             <?php foreach ($team as $person): ?>
                 <li class="card team-card reveal" id="<?= e($person['slug']) ?>">
                     <div class="team-card__head">
-                        <?php if ($photo = image('team', $person['slug'])): ?>
+                        <?php if ($photo = image('team-photo', $person['slug'])): ?>
                             <?= View::partial('public/partials/img', ['image' => $photo, 'alt' => '', 'sizes' => '72px', 'class' => 'avatar']) ?>
                         <?php else: ?>
                             <span class="avatar avatar--initials" aria-hidden="true"><?= e(initials($person['name'])) ?></span>

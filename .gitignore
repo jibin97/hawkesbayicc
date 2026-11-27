@@ -11,3 +11,7 @@ CLAUDE.local.md
 
 # macOS
 .DS_Store
+
+# Admin-uploaded photos (generated; restore from backup or re-run bin/seed-images.php)
+/public/uploads/*
+!/public/uploads/.htaccess

@@ -22,7 +22,7 @@ $timetable = $academy['timetable'];
         </div>
         </div>
         <div class="reveal">
-            <?= View::partial('public/partials/media', ['image' => image('site', 'duet'), 'alt' => 'Two HBICC students performing classical Indian dance on stage', 'ratio' => '3x2', 'sizes' => '(min-width: 64em) 560px, 100vw', 'eager' => true]) ?>
+            <?= View::partial('public/partials/media', ['image' => image('academy-hero'), 'ratio' => '3x2', 'sizes' => '(min-width: 64em) 560px, 100vw', 'eager' => true]) ?>
         </div>
     </div>
 </section>

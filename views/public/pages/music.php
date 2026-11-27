@@ -29,7 +29,7 @@ foreach ($site['social'] as $s) {
             </div>
         </div>
         <div class="reveal">
-            <?= View::partial('public/partials/media', ['image' => image('site', 'band'), 'alt' => 'Dr. Wuts & The Bindaas Bollywood Band playing live on stage', 'ratio' => '3x2', 'sizes' => '(min-width: 64em) 560px, 100vw', 'label' => 'The band live', 'eager' => true]) ?>
+            <?= View::partial('public/partials/media', ['image' => image('music-hero'), 'ratio' => '3x2', 'sizes' => '(min-width: 64em) 560px, 100vw', 'label' => 'The band live', 'eager' => true]) ?>
         </div>
     </div>
 </section>
@@ -82,7 +82,7 @@ foreach ($site['social'] as $s) {
             </div>
         <?php endif; ?>
         <h3 class="label-heading">Photos</h3>
-        <?= View::partial('public/partials/gallery', ['images' => images('music'), 'title' => $band['name'] . ' live', 'id' => 'gallery-band', 'visible' => 4]) ?>
+        <?= View::partial('public/partials/gallery', ['images' => images('band-gallery'), 'title' => $band['name'] . ' live', 'id' => 'gallery-band', 'visible' => 4]) ?>
 
         <?php if ($band['repertoire'] !== []): ?>
             <h3 class="label-heading">Repertoire</h3>

@@ -119,26 +119,40 @@ function admin_headers(): void
 }
 
 /**
- * A photo from content/images.php: ['w', 'h', 'sm' (640px wide), 'lg' (up to 1600px)], or null if absent.
+ * Photos placed in a section of the site by the admin (see App\Media\Sections), in display order.
+ * Each: id, w, h, sm (640px WebP), lg (up to 1600px WebP), alt, fit. If the database is unavailable,
+ * the error is logged once and pages fall back to their placeholders.
  *
- * @return array{w:int,h:int,sm:string,lg:string}|null
+ * @return list<array{id:int,w:int,h:int,sm:string,lg:string,alt:string,fit:string}>
  */
-function image(string $group, string $key): ?array
+function images(string $section, ?string $item = null): array
 {
-    return \App\Content::get('images')[$group][$key] ?? null;
+    static $failed = false;
+    if ($failed) {
+        return [];
+    }
+    try {
+        $rows = \App\Media\ImageRepository::placed()[$section][(string) ($item ?? '')] ?? [];
+    } catch (\Throwable $e) {
+        $failed = true;
+        error_log('Images unavailable: ' . $e->getMessage());
+        return [];
+    }
+
+    return array_map(static fn (array $r): array => [
+        'id' => $r['id'], 'w' => (int) $r['width'], 'h' => (int) $r['height'],
+        'sm' => $r['path_sm'], 'lg' => $r['path'], 'alt' => $r['alt_text'], 'fit' => $r['fit'],
+    ], $rows);
 }
 
 /**
- * Every photo in a group, in file order, minus any keys in $except.
+ * The first (or only) photo in a section, or null.
  *
- * @param list<string> $except
- * @return array<string, array{w:int,h:int,sm:string,lg:string}>
+ * @return array{id:int,w:int,h:int,sm:string,lg:string,alt:string,fit:string}|null
  */
-function images(string $group, array $except = []): array
+function image(string $section, ?string $item = null): ?array
 {
-    $all = \App\Content::get('images')[$group] ?? [];
-
-    return array_diff_key($all, array_flip($except));
+    return images($section, $item)[0] ?? null;
 }
 
 /** Absolute URL on the canonical site, e.g. abs_url('/academy'). */

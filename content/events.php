@@ -8,7 +8,7 @@
  *   ['title' => '', 'date' => '2027-06-12', 'time' => '7:00pm', 'venue' => '', 'town' => 'Hastings',
  *    'charity' => '', 'summary' => '', 'ticket_url' => 'https://…']
  *
- * 'archive': dates and venues for 2019–2025 are from the event posters. CONFIRM the charity for 2017–2021 and 2025. Photos: content/images.php group 'made-{year}'.
+ * 'archive': dates and venues for 2019–2025 are from the event posters. CONFIRM the charity for 2017–2021 and 2025. Photos: admin → M.A.D.E gallery.
  */
 
 declare(strict_types=1);

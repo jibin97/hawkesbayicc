@@ -5,7 +5,7 @@
  * Bios are proofread rewrites of the old site's Team page (hawkesbayicc.nz/team, 2026-11). Time-relative
  * phrases ("for the last 3 years", "13 years ago") were dropped because their reference date is unknown.
  * 'role' = official title where the old site gave one; otherwise a descriptive badge (CONFIRM those).
- * Photos come from content/images.php ('team' group, keyed by slug); a missing photo shows initials.
+ * Photos are managed in the admin (/admin/images → Team member photo); a missing photo shows initials.
  */
 
 declare(strict_types=1);

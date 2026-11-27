@@ -4,7 +4,7 @@
  * Without JavaScript the links simply open the photo; site.js turns them into a lightbox
  * (keyboard, swipe, prev/next) covering every photo in the same [data-gallery].
  *
- * @var array<string, array> $images  From images(): key => w, h, sm, lg
+ * @var list<array>          $images  From images(): w, h, sm, lg, alt
  * @var string               $title   Gallery name, used in alt text and the lightbox caption
  * @var int                  $visible How many thumbnails show before "Show all" (0 = all hidden behind the button)
  * @var string               $id      Unique id prefix for this gallery
@@ -19,7 +19,7 @@ $shown  = array_slice($images, 0, $visible);
 $hidden = array_slice($images, $visible);
 
 $thumb = static function (array $img, int $n) use ($title, $total): string {
-    $alt = "{$title}, photo {$n} of {$total}";
+    $alt = ($img['alt'] !== '' ? $img['alt'] : $title) . ", photo {$n} of {$total}";
     $w   = min(640, (int) $img['w']);
     $h   = (int) round($img['h'] * $w / $img['w']);
     return '<li><a class="gallery__link" href="' . e($img['lg']) . '" data-lightbox'

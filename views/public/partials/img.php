@@ -1,6 +1,6 @@
 <?php
 /**
- * Responsive <img> for an entry from content/images.php: the browser picks the 640px or 1600px WebP.
+ * Responsive <img> for a photo from image()/images(): the browser picks the 640px or 1600px WebP.
  * width/height are the real proportions, so space is reserved before the image loads.
  *
  * @var array  $image  w, h, sm, lg

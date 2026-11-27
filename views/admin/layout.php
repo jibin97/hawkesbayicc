@@ -17,6 +17,7 @@ $user ??= null;
     <meta name="theme-color" content="#0A0809">
     <link rel="stylesheet" href="/assets/css/theme.css">
     <link rel="stylesheet" href="/assets/css/site.css">
+    <script src="/assets/js/admin.js" defer></script>
 </head>
 <body class="admin">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -27,6 +28,7 @@ $user ??= null;
                 <nav class="admin-nav" aria-label="Admin">
                     <a href="/admin" <?= ($active ?? 'dashboard') === 'dashboard' ? 'aria-current="page"' : '' ?>>Dashboard</a>
                     <a href="/admin/inquiries" <?= ($active ?? '') === 'inquiries' ? 'aria-current="page"' : '' ?>>Inquiries</a>
+                    <a href="/admin/images" <?= ($active ?? '') === 'images' ? 'aria-current="page"' : '' ?>>Images</a>
                     <a href="/" target="_blank" rel="noopener">View site<span class="visually-hidden"> (opens in a new tab)</span></a>
                 </nav>
                 <form method="post" action="/admin/logout" class="logout">

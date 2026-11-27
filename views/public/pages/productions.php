@@ -35,9 +35,8 @@ foreach ($site['social'] as $s) {
         <div class="wrap production__grid">
             <div class="production__media reveal">
                 <?= View::partial('public/partials/media', [
-                    'image' => image($p['slug'], $p['cover']),
-                    'alt'   => $p['cover_fit'] === 'contain' ? $p['title'] . ' poster' : 'Scene from ' . $p['title'],
-                    'ratio' => '4x5', 'fit' => $p['cover_fit'], 'sizes' => '(min-width: 48em) 420px, 100vw',
+                    'image' => image('production-cover', $p['slug']),
+                    'ratio' => '4x5', 'sizes' => '(min-width: 48em) 420px, 100vw',
                     'label' => $p['title'] . ' poster', 'eager' => $i === 0,
                 ]) ?>
             </div>
@@ -78,7 +77,7 @@ foreach ($site['social'] as $s) {
                 </div>
             </div>
         </div>
-        <?php $photos = images($p['slug'], [$p['cover']]); if ($photos !== []): ?>
+        <?php $photos = images('production-gallery', $p['slug']); if ($photos !== []): ?>
             <div class="wrap production__gallery">
                 <h3 class="label-heading">Gallery · <?= count($photos) ?> photos</h3>
                 <?= View::partial('public/partials/gallery', ['images' => $photos, 'title' => $p['title'], 'id' => 'gallery-' . $p['slug'], 'visible' => 8]) ?>

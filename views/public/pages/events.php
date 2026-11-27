@@ -82,8 +82,8 @@ $upcoming = upcoming_events($events['upcoming']);
                 <li class="timeline__item reveal" id="made-<?= e($item['year']) ?>">
                     <span class="timeline__year"><?= e($item['year']) ?></span>
                     <article class="card card--media timeline__card">
-                        <?php $photos = images('made-' . $item['year']); ?>
-                        <?= View::partial('public/partials/media', ['image' => $photos !== [] ? reset($photos) : null, 'alt' => 'On stage at ' . $item['title'], 'ratio' => '3x2', 'sizes' => '(min-width: 48em) 600px, 100vw', 'label' => 'M.A.D.E ' . $item['year']]) ?>
+                        <?php $photos = images('made-gallery', (string) $item['year']); ?>
+                        <?= View::partial('public/partials/media', ['image' => $photos[0] ?? null, 'ratio' => '3x2', 'sizes' => '(min-width: 48em) 600px, 100vw', 'label' => 'M.A.D.E ' . $item['year']]) ?>
                         <div class="card__body">
                             <h3><?= e($item['title']) ?></h3>
                             <?php if (!empty($item['featuring'])): ?><p>Featuring <em><?= e($item['featuring']) ?></em></p><?php endif; ?>

@@ -109,6 +109,8 @@ $router->add('/admin/logout', ['POST'],                $admin('logout.php'));
 $router->add('/admin/inquiries',      ['GET', 'HEAD'], $admin('inquiries.php'));
 $router->add('/admin/inquiry',        ['GET', 'HEAD'], $admin('inquiry.php'));
 $router->add('/admin/inquiry/status', ['POST'],        $admin('inquiry-status.php'));
+$router->add('/admin/images',         ['GET', 'HEAD'], $admin('images.php'));
+$router->add('/admin/images/action',  ['POST'],        $admin('image-action.php'));
 
 // ---------- Dispatch ----------
 try {
